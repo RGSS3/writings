@@ -7,7 +7,7 @@ DSL looks like:
 36 ?- B := do
    X <- [1,2,3],
    Y <- [3,4,5],
-   (Z is X * Y),
+   Z is X * Y,
    return(Z).
 B = [3, 4, 5, 6, 8, 10, 9, 12, 15] ;
 false.
@@ -59,7 +59,7 @@ do(A, B) :-
   (A =.. [return|_] -> call(A, B); B = A).
 
 do((A is D, C), B) :-
-  A is D,
+  A is D, !,
   do(C, B).
 
 do((A, C), B) :-
