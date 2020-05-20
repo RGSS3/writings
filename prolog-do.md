@@ -18,7 +18,7 @@ What's implemented(and what's wanted if you want to try from scratch):
    * do
      * do is a prefix operator with somehow lower precedence.
      * define an operator <- and pattern-match it
-     * lambda is useful([https://www.swi-prolog.org/pldoc/man?section=yall])
+     * lambda is useful([https://www.swi-prolog.org/pldoc/man?section=yall]())
 
 
 ```prolog
