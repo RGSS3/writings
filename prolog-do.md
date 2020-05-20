@@ -1,4 +1,25 @@
-## Creating a monad and donation in prolog is easy!
+## Creating a monad and do-notation in prolog is easy!
+Prolog isn't limiting its capability in logic and backtracking by exposing directly access to AST(and operators).  
+This is how I used to imitate Haskell.
+
+DSL looks like:
+```prolog
+36 ?- B := do
+   X <- [1,2,3],
+   Y <- [3,4,5],
+   (Z is X * Y),
+   return(Z).
+B = [3, 4, 5, 6, 8, 10, 9, 12, 15] ;
+false.
+```
+
+What's implemented(and what's wanted if you want to try from scratch):
+   * some known monad (by defining return/bind)
+   * do
+     * do is a prefix operator with somehow lower precedence.
+     * define an operator <- and pattern-match it
+     * lambda is useful(https://www.swi-prolog.org/pldoc/man?section=yall)
+
 
 ```prolog
 :- op(1030, xfx, :=).
@@ -37,20 +58,16 @@ do(A, B) :-
   \+(A =.. [','|_]),
   (A =.. [return|_] -> call(A, B); B = A).
 
-do((A, C), B) :-
-  A =.. ['is'|_], !,
-  call(A),
+do((A is D, C), B) :-
+  A is D,
   do(C, B).
 
 do((A, C), B) :-
   \+(A =.. ['<-'|_]), !,
   call(A, _),
   do(C, B).
-      
 
-      
-do((A, C), B) :-
-  A =.. ['<-', LHS, RHS],
+do((LHS <- RHS, C), B) :-
   bind(RHS, [LHS, B1]>>do(C, B1), B).
       
 double(X, YY) :- Y is X * 2, YY := return(Y).
