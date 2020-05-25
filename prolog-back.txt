@@ -1,0 +1,53 @@
+## Introduction to the backwards operator
+
+Imagine you'll to implement the classic fibonacci number:
+### Code 1
+```prolog
+fib(0, 1).
+fib(1, 1).
+fib(N, A) :-
+  N1 is N - 1,
+  N2 is N - 2,
+  fib(N1, A1),
+  fib(N2, A2),
+  A is A1 + A2
+  /* ,writeln((N, A)) */
+  .
+```
+
+This looks good, but if you remove the comment characters around `writeln`, you'll find even simple `fib(13, A)` took many redundant calculations.
+
+One of the optimization is to iterate rather than bare recursion.
+### Code 2
+```prolog
+fib(0, _, A, A).
+fib(N, A, B, Ans) :-
+  N > 0,
+  C is B,
+  D is A + B,
+  N1 is N - 1,
+  fib(N1, C, D, Ans).
+
+fib(N, A) :-
+    fib(N, 0, 1, A).
+```
+
+`fib(13, Ans)` only took ~13 times.
+
+Or you can use some dirty state in `Code 1`:
+### Code 3
+```prolog
+:- dynamic fib/2.
+fib(0, 1).
+fib(1, 1).
+fib(N, A) :-
+  N1 is N - 1,
+  N2 is N - 2,
+  fib(N1, A1),
+  fib(N2, A2),
+  A is A1 + A2,
+  writeln((N, A)), 
+  asserta((fib(N, A) :- !)).  % asserta means to insert this before all fib(_, _) clauses, ! will cut the backtracking.
+```
+
+`Code 3` slightly optimizes without many modifications to `Code 1`
