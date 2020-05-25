@@ -1,7 +1,9 @@
 ## Introduction to the backwards operator
 
+### Fibonacci Recursion
+
 Imagine you'll to implement the classic fibonacci number:
-### Code 1
+#### Code 1
 ```prolog
 fib(0, 1).
 fib(1, 1).
@@ -18,7 +20,7 @@ fib(N, A) :-
 This looks good, but if you remove the comment characters around `writeln`, you'll find even simple `fib(13, A)` took many redundant calculations.
 
 One of the optimization is to iterate rather than bare recursion.
-### Code 2
+#### Code 2
 ```prolog
 fib(0, _, A, A).
 fib(N, A, B, Ans) :-
@@ -35,7 +37,7 @@ fib(N, A) :-
 `fib(13, Ans)` only took ~13 times.
 
 Or you can use some dirty state in `Code 1`:
-### Code 3
+#### Code 3
 ```prolog
 :- dynamic fib/2.
 fib(0, 1).
@@ -51,3 +53,48 @@ fib(N, A) :-
 ```
 
 `Code 3` slightly optimizes without many modifications to `Code 1`
+### Pouring Water problem
+Imagine you have 3 jugs with volume 10/7/3,     
+Only Jug 10 is full, the other two are empty.    
+Split the water to equal half 5/5.    
+More can be found at
+[http://mathcentral.uregina.ca/QQ/database/QQ.09.98/lane1.html](http://mathcentral.uregina.ca/QQ/database/QQ.09.98/lane1.html).
+
+
+
+
+
+
+### Existential Arrow
+By `Existential` there are many meanings.      
+Here we define this term as several different form:
+
+1. A prolog fact or predicate without clauses.
+```prolog
+fib(0, 1). % fact
+1 is 4 - 3. % predicate evaluation
+```
+
+2. 
+A prolog clause with body, either not recursive or deterministically recursive.
+
+```prolog
+succ(A, B) :- B is A + 1.  % not recursive
+
+len([], 0).
+len([_|Xs], A) :- A is 1 + Xs. % non-deterministic
+
+%but if:
+detlen(A, B) :- 
+  ground(A),   % ensure A is ground
+  len(A, B).   % detlen is deterministic
+``` 
+
+3.
+A witness functor like:    
+```prolog
+  A = [fib(0, 1), fib(1, 1)],
+  member(fib(0, N), A).
+```
+
+We say the functor ```fib(0, 1)``` is the witness and `N` will be unified to 1
