@@ -43,16 +43,22 @@ Or you can use some dirty state in `Code 1`:
 fib(0, 1).
 fib(1, 1).
 fib(N, A) :-
+  % 1. fetch two known fib
   N1 is N - 1,
   N2 is N - 2,
   fib(N1, A1),
   fib(N2, A2),
+  % 2. calculate the new one
   A is A1 + A2,
   writeln((N, A)), 
+  % 3. update database
   asserta((fib(N, A) :- !)).  % asserta means to insert this before all fib(_, _) clauses, ! will cut the backtracking.
 ```
 
 `Code 3` slightly optimizes without many modifications to `Code 1`
+
+
+
 ### Pouring Water problem
 Imagine you have 3 jugs with volume 10/7/3,     
 Only Jug 10 is full, the other two are empty.    
@@ -92,7 +98,7 @@ final((10-5, 7-5, 3-0)).
 % one step is to 
 % 1. choose an exisiting state = A
 % 2. get its cost = X
-% 3. expand a new state = B
+% 3. expand to new states, each = B
 % 4. if we can update cost(B, Z), update it
 
 step :-
