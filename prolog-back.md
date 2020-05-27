@@ -102,6 +102,7 @@ step :-
   ((cost(B, Y), Y > X + 1; \+cost(B, _)) ->
        Z is X + 1,
        retractall(cost(B, _)),
+       retractall(parent(B, _)),
        assert(cost(B, Z)),
        assert(parent(B, A))).
        
