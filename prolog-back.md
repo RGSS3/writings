@@ -67,6 +67,7 @@ More can be found at
 [http://mathcentral.uregina.ca/QQ/database/QQ.09.98/lane1.html](http://mathcentral.uregina.ca/QQ/database/QQ.09.98/lane1.html).
 
 
+### Code 4
 First we define the `pouring`:
 ```prolog
 % The possible operation
@@ -125,6 +126,10 @@ run:-
 printpath(B) :-
   (parent(B, A) -> printpath(A), !; true), writeln(B).
 ```
+
+Here we no longer write something like `Code 3`.   
+For example, you may wish to use a goal like `cost(A, X).`   
+Then how to deal with `cost(state1, 6) -> cost(state2, 5) -> cost(state1, 4)`?    
 
 ### Existential Arrow
 By `Existential` there are many meanings. For example existential types in some languages.   
