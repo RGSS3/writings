@@ -129,7 +129,9 @@ printpath(B) :-
 
 Here we no longer write something like `Code 3`.   
 For example, you may wish to use a goal like `cost(A, X).`   
-Then how to deal with `cost(state1, 6) -> cost(state2, 5) -> cost(state1, 4)`?    
+Then how to deal with `cost(state1, 6) -> cost(state2, 5) -> cost(state1, 4)`?     
+This can indeed solve this problem too, however, by enumerating X from 0, 1, 2 ... .                 
+But our `run` goal should do the enumeration(something Turing-recognizable?).
 
 ### Existential Arrow
 By `Existential` there are many meanings. For example existential types in some languages.   
