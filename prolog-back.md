@@ -1,4 +1,4 @@
-## Introduction to the backwards operator
+## Introduction to the existential arrow
 
 ### Fibonacci Recursion
 
@@ -96,7 +96,6 @@ final((10-5, 7-5, 3-0)).
 % 4. if we can update cost(B, Z), update it
 
 step :-
-  state(A),            
   cost(A, X),
   try_pour(B, A),
   ((cost(B, Y), Y > X + 1; \+cost(B, _)) ->
@@ -121,38 +120,22 @@ printpath(B) :-
   (parent(B, A) -> printpath(A), !; true), writeln(B).
 ```
 
-
-
 ### Existential Arrow
-By `Existential` there are many meanings.      
-Here we define this term as several different form:
+By `Existential` there are many meanings. For example existential types in some languages.   
+The last chapter is mainly about a normal BFS(breadth first search).   
+Let's review the predicate `step` in the last chapter.    
+It just do something like.   
 
-1. A prolog fact or predicate without clauses.
-```prolog
-fib(0, 1). % fact
-1 is 4 - 3. % predicate evaluation
-```
+ 1. fetch some exisiting information  (cost(A, X))
+ 2. do some transformation and calculation (try_pour, calculating cost)
+ 3. adjust some information (retract/assert)
+ 
+This gives us a sense: 
+``` Existing -> New ```
 
-2. 
-A prolog clause with body, either not recursive or deterministically recursive.
+And the predicate `run` just do some initialization and finalization work.   
+Between them there is a repeatition of running `step` until no more info is generated.
+The same applies to the code in the first chapter, taking some known fib(U, V)'s and generating
+a new one.   
 
-```prolog
-succ(A, B) :- B is A + 1.  % not recursive
-
-len([], 0).
-len([_|Xs], A) :- A is 1 + Xs. % non-deterministic
-
-%but if:
-detlen(A, B) :- 
-  ground(A),   % ensure A is ground
-  len(A, B).   % detlen is deterministic
-``` 
-
-3.
-A witness functor like:    
-```prolog
-  A = [fib(0, 1), fib(1, 1)],
-  member(fib(0, N), A).
-```
-
-We say the functor ```fib(0, 1)``` is the witness and `N` will be unified to 1
+Let's take this pattern out and defining new operators.
