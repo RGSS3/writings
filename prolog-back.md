@@ -2,7 +2,7 @@
 
 ### Fibonacci Recursion
 
-Imagine you'll to implement the classic fibonacci number:
+Imagine you'd like to implement the classic fibonacci number:
 #### Code 1
 ```prolog
 fib(0, 1).
