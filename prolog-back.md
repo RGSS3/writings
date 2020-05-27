@@ -17,7 +17,7 @@ fib(N, A) :-
   .
 ```
 
-This looks good, but if you remove the comment characters around `writeln`, you'll find even simple `fib(13, A)` took many redundant calculations.
+This looks good, but if you remove the comment characters around `writeln`, you'll find even simple `fib(13, A)` takes many redundant calculations.
 
 One of the optimization is to iterate rather than bare recursion.
 #### Code 2
