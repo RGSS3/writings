@@ -243,14 +243,14 @@ Another operator `:~` to imitate `:-` which actually acts like reversed `~>`:
 new(A) :-\+A, assert(A).
 runGoal(G) :- repeat, ((step, \+G) -> fail; !, G).
 :- op(1110, xfx, :~).
-A ~> B :- B :~ A.
+A ~> new B :- B :~ A.
 ```
 The whole thing looks like:
 ```prolog
 :- dynamic fib/2.
 :- op(1110, xfx, ~>).
 :- op(1110, xfx, :~).
-A ~> B :- B :~ A.
+A ~> new B :- B :~ A.
 
 run :- init, repeat, (step -> fail; !).
 runGoal(G) :- init, repeat, ((step, \+G) -> fail; !, G).
@@ -264,8 +264,7 @@ new(A) :-
   \+A,
   assert(A).
 
-
-new fib(N2, A2) :~
+fib(N2, A2) :~
   fib(N0, A0),
   succ(N0, N1),
   fib(N1, A1),
@@ -279,6 +278,9 @@ init :-
 main :-
   runGoal(fib(13, Ans)),
   writeln(Ans).
+
+
+
 ```
 
 Clean and tidy, right?
