@@ -233,3 +233,44 @@ However if you forget to type the lines with comment `***(1)***` and `***(2)***`
 And it's easy to forget!.    
 
 The lines `Z is X + 1` and `A2 is A0 + A1` need not appear on the right hand but left hand.  
+### Second Version
+in this version we define a `new` operator, new(A) only succeeds when A is not a fact and assert it a fact.
+We define a new runner to run until some goal is done or we can not make more steps:
+```prolog
+:-op(200, fx, new).
+new(A) :-\+A, assert(A).
+runGoal(G) :- repeat, ((step, \+G) -> fail; !, G).
+```
+The whole thing looks like:
+```prolog
+:- dynamic fib/2.
+:-op(1110, xfx, ~>).
+run :- repeat, (step -> fail; !).
+runGoal(G) :- repeat, ((step, \+G) -> fail; !, G).
+step :-
+  (A ~> B),
+  A,
+  B.
+
+:-op(200, fx, new).
+new(A) :-
+  \+A,
+  assert(A).
+
+fib(N0, A0),
+succ(N0, N1),
+fib(N1, A1),
+succ(N1, N2),
+A2 is A0 + A1
+~>
+   new fib(N2, A2).
+
+main :-
+  abolish(fib/2),
+  assert(fib(0, 1)),
+  assert(fib(1, 1)),
+  runGoal(fib(13, Ans)),
+  writeln(Ans).
+```
+
+Clean and tidy, right?
