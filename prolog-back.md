@@ -235,16 +235,23 @@ And it's easy to forget!.
 The lines `Z is X + 1` and `A2 is A0 + A1` need not appear on the right hand but left hand.  
 ### Second Version
 in this version we define a `new` operator, new(A) only succeeds when A is not a fact and assert it a fact.
-We define a new runner to run until some goal is done or we can not make more steps:
+We define a new runner `runGoal` to run until some goal is done or we can not make more steps
+Another operator `:~` to imitate `:-` which actually acts like reversed `~>`:
+
 ```prolog
 :-op(200, fx, new).
 new(A) :-\+A, assert(A).
 runGoal(G) :- repeat, ((step, \+G) -> fail; !, G).
+:- op(1110, xfx, :~).
+A ~> B :- B :~ A.
 ```
 The whole thing looks like:
 ```prolog
 :- dynamic fib/2.
 :- op(1110, xfx, ~>).
+:- op(1110, xfx, :~).
+A ~> B :- B :~ A.
+
 run :- init, repeat, (step -> fail; !).
 runGoal(G) :- init, repeat, ((step, \+G) -> fail; !, G).
 step :-
@@ -257,13 +264,13 @@ new(A) :-
   \+A,
   assert(A).
 
-fib(N0, A0),
-succ(N0, N1),
-fib(N1, A1),
-succ(N1, N2),
-A2 is A0 + A1
-~>
-   new fib(N2, A2).
+
+new fib(N2, A2) :~
+  fib(N0, A0),
+  succ(N0, N1),
+  fib(N1, A1),
+  succ(N1, N2),
+  A2 is A0 + A1.
 
 init :-
   abolish(fib/2),
