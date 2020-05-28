@@ -198,3 +198,38 @@ main :-
 
 Other things are not changed.
 [first.pl](prolog-back/first.pl)
+
+We could change the fibonacci generator like:
+```prolog
+:-op(1110, xfx, ~>).
+run :- repeat, (step -> fail; !).
+step :-
+  (A ~> B),
+  A,
+  B.
+
+:- dynamic fib/2.
+fib(N0, A0),
+N0 + 2 =< 13,   % ***(1)***
+succ(N0, N1),
+fib(N1, A1),
+succ(N1, N2),
+\+fib(N2, _)    % ***(2)***
+~>
+   A2 is A0 + A1,
+   assert(fib(N2, A2)).
+
+main :-
+  abolish(fib/2),
+  assert(fib(0, 1)),
+  assert(fib(1, 1)),
+  run,
+  fib(13, Ans),
+  writeln(Ans).
+```
+
+This can do just what we expect.    
+However if you forget to type the lines with comment `***(1)***` and `***(2)***`,  you'll get stuck in dead loop.
+And it's easy to forget!.    
+
+The lines `Z is X + 1` and `A2 is A0 + A1` need not appear on the right hand but left hand.  
