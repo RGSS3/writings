@@ -197,4 +197,4 @@ main :-
 ```
 
 Other things are not changed.
-[prolog-back/first.pl](first.pl)
+[first.pl](prolog-back/first.pl)
