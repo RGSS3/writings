@@ -244,7 +244,7 @@ runGoal(G) :- repeat, ((step, \+G) -> fail; !, G).
 The whole thing looks like:
 ```prolog
 :- dynamic fib/2.
-:-op(1110, xfx, ~>).
+:- op(1110, xfx, ~>).
 run :- init, repeat, (step -> fail; !).
 runGoal(G) :- init, repeat, ((step, \+G) -> fail; !, G).
 step :-
