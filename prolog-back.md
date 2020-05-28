@@ -245,8 +245,8 @@ The whole thing looks like:
 ```prolog
 :- dynamic fib/2.
 :-op(1110, xfx, ~>).
-run :- repeat, (step -> fail; !).
-runGoal(G) :- repeat, ((step, \+G) -> fail; !, G).
+run :- init, repeat, (step -> fail; !).
+runGoal(G) :- init, repeat, ((step, \+G) -> fail; !, G).
 step :-
   (A ~> B),
   A,
@@ -265,10 +265,11 @@ A2 is A0 + A1
 ~>
    new fib(N2, A2).
 
-main :-
+init :-
   abolish(fib/2),
   assert(fib(0, 1)),
-  assert(fib(1, 1)),
+  assert(fib(1, 1)).
+main :-
   runGoal(fib(13, Ans)),
   writeln(Ans).
 ```
